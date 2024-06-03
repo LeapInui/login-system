@@ -1,8 +1,43 @@
 import tkinter
 from tkinter import *
 from tkinter import messagebox
+import sqlite3
+import bcrypt
 
 def signup_window():
+
+    # Register function
+    def register():
+
+        # Validation
+        if regname_entry.get() == "" or regpass_entry.get() == "":
+            messagebox.showerror("Error", "All fields are required")
+
+        elif regpass_entry.get() != confirmregpass_entry.get():
+            messagebox.showerror("Error", "Passwords do not match")
+
+        else:
+            cursor.execute("SELECT username FROM users WHERE username = ?", [regname_entry.get()])
+            if cursor.fetchone() is not None:
+                messagebox.showerror("Error", "Username already exists")
+            else:
+                encoded_pass = regpass_entry.get().encode("UTF-8")
+                hashed_pass = bcrypt.hashpw(encoded_pass, bcrypt.gensalt()) # Hash password
+
+                cursor.execute("INSERT INTO users VALUES (?, ?)", [regname_entry.get(), hashed_pass])
+                conn.commit()
+                messagebox.showinfo("Success", "Account registration is successful")
+                regname_entry.delete(0, END)
+                regpass_entry.delete(0, END)
+                confirmregpass_entry.delete(0, END)
+                back()
+
+    # Functionality for back button
+    def back():
+        signup_window.destroy()
+        main_window.deiconify()
+
+    main_window.iconify()
 
     # Sign up window to register
     signup_window = tkinter.Tk()
@@ -33,7 +68,32 @@ def signup_window():
     registerButton.configure(bg = "royal blue")
     registerButton.pack()
 
+    backButton = tkinter.Button(signup_window, text = "Back", font = ("Comic Sans MS", 12), command = back)
+    backButton.configure(bg = "royal blue")
+    backButton.pack(side = LEFT, anchor = S)
+
 if __name__ == "__main__":
+
+    # Login function
+    def login():
+        if username_entry.get() == "" or password_entry.get() == "":
+            messagebox.showerror("Error", "All fields are required")
+        else:
+            cursor.execute("SELECT password FROM users WHERE username = ?", [username_entry.get()])
+            result_password = cursor.fetchone()
+            if result_password:
+                if bcrypt.checkpw(password_entry.get().encode("UTF-8"), result_password[0]):
+                    messagebox.showinfo("Success", "Login successful")
+                    main_window.destroy()
+                else:
+                    messagebox.showerror("Error", "Invalid password")
+            else:
+                messagebox.showerror("Error", "Invalid username")
+
+    # Create database
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS users (username TEXT NOT NULL, password TEXT NOT NULL)")
 
     # Main log in window
     main_window = tkinter.Tk()
