@@ -11,6 +11,10 @@ if __name__ == "__main__":
     main_window.configure(bg = "royal blue")
     main_window.resizable(False, False)
 
+    banner = tkinter.PhotoImage(file = "resources/banner.png")
+    banner_image = tkinter.Label(main_window, image = banner, bg = "royal blue")
+    banner_image.pack()
+
     username_label = tkinter.Label(main_window, text = "Username", bg = "royal blue", font = ("Comic Sans MS", 20))
     username_label.pack()
     username_entry = tkinter.Entry(main_window)
