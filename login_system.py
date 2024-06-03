@@ -72,6 +72,19 @@ def signup_window():
     backButton.configure(bg = "royal blue")
     backButton.pack(side = LEFT, anchor = S)
 
+def menu_window():
+    menu_window = tkinter.Tk()
+    menu_window.title("Menu")
+    menu_window.geometry("500x500")
+    menu_window.configure(bg = "royal blue")
+    menu_window.resizable(False, False)
+
+    surprise = tkinter.PhotoImage(file = "resources/surprise.png")
+    menu_image = tkinter.Label(menu_window, image = surprise, bg = "royal blue")
+    menu_image.pack()
+
+    menu_window.mainloop()
+
 if __name__ == "__main__":
 
     # Login function
