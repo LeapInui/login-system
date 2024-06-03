@@ -4,6 +4,7 @@ from tkinter import messagebox
 
 if __name__ == "__main__":
 
+    # Main window
     main_window = tkinter.Tk()
     main_window.title("Login")
     main_window.geometry("400x450")
