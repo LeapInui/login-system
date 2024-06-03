@@ -64,7 +64,7 @@ def signup_window():
     confirmregpass_entry = tkinter.Entry(signup_window, show = "*")
     confirmregpass_entry.pack()
 
-    registerButton = tkinter.Button(signup_window, text = "Register", font = ("Comic Sans MS", 12))
+    registerButton = tkinter.Button(signup_window, text = "Register", font = ("Comic Sans MS", 12), command = register)
     registerButton.configure(bg = "royal blue")
     registerButton.pack()
 
@@ -73,6 +73,8 @@ def signup_window():
     backButton.pack(side = LEFT, anchor = S)
 
 def menu_window():
+    
+    # Main menu
     menu_window = tkinter.Tk()
     menu_window.title("Menu")
     menu_window.geometry("500x500")
@@ -98,6 +100,7 @@ if __name__ == "__main__":
                 if bcrypt.checkpw(password_entry.get().encode("UTF-8"), result_password[0]):
                     messagebox.showinfo("Success", "Login successful")
                     main_window.destroy()
+                    menu_window()
                 else:
                     messagebox.showerror("Error", "Invalid password")
             else:
@@ -129,7 +132,7 @@ if __name__ == "__main__":
     password_entry = tkinter.Entry(main_window, show = "*")
     password_entry.pack()
 
-    login_button = tkinter.Button(main_window, text = "Login", bg = "royal blue", font = ("Comic Sans MS", 12))
+    login_button = tkinter.Button(main_window, text = "Login", bg = "royal blue", font = ("Comic Sans MS", 12), command = login)
     login_button.pack()
 
     signup_button = tkinter.Button(main_window, text = "Sign Up", bg = "royal blue", font = ("Comic Sans MS", 12), command = signup_window)
